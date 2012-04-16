@@ -27,7 +27,7 @@ RGBAColor(float r, float g, float b, float a)
 	return color;
 }
 
-static void glColor_from_color(Color color);
+void glColor_from_color(Color color);
 void drawCircle(cpVect center, cpFloat angle, cpFloat radius, Color lineColor, Color fillColor);
 void drawRect(cpVect upperLeft, cpVect dimensions, Color fillColor);
 void drawString(int x, int y, const char *str, Color stringColor);

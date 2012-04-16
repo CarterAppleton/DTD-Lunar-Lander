@@ -14,26 +14,7 @@
 #include "constants.h"
 
 #define MAX_ORIENTATION 3
-//#define MAX_THRUST 1.665
 #define MAX_THRUST 1.68f
-
-/*
- const cpFloat radius = 10.0f;
- const cpFloat mass = 1.0f;
- 
- cpVect pos = cpv(100,100);
- 
- box = cpSpaceAddBody(space, cpBodyNew(mass, cpMomentForCircle(mass, radius, 0, cpvzero)));
- cpBodySetPos(box, pos);
- 
- // Set the box's angular velocity to match its orbital period and
- // align its initial angle with its position.
- cpBodySetAngle(box, cpfatan2(pos.y, pos.x));
- 
- cpShape *shape = cpSpaceAddShape(space, cpCircleShapeNew(box, radius, cpvzero));
- cpShapeSetElasticity(shape, 0.0f);
- cpShapeSetFriction(shape, 0.5f);
- */
 
 cpFloat radiansFromOrientation(int orientation)
 {

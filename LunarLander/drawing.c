@@ -14,9 +14,7 @@
 
 #include "fonts.h"
 
-//#include "fonts.h"
-
-static void
+void
 glColor_from_color(Color color)
 {
 	glColor4fv((GLfloat *)&color);

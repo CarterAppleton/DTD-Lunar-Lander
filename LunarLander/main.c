@@ -29,11 +29,17 @@ void keyboard(unsigned char key, int a, int b);
 void timercall(int value);
 void update(int ticks);
 
+/* Tell the scene manager to update
+ */
+
 void
 update(int ticks)
 {
     scene_manager_update();
 }
+
+/* Run the display function again after we've waited for drawing
+ */
 
 void
 timercall(int value)
@@ -41,6 +47,9 @@ timercall(int value)
 	glutTimerFunc(SLEEP_TICKS, timercall, 0);
 	glutPostRedisplay();
 }
+
+/* Initialize the graphics
+ */
 
 void init(void)
 {
@@ -60,15 +69,24 @@ void init(void)
 	glShadeModel(GL_FLAT);
 }
 
+/* Update everything then tell scene manager to display
+ */
+
 void display(void)
 {
-    scene_manager_display();
-
+    //Update everything
     update(1);
+
+    //Tell scene manager to display
+    scene_manager_display();
         
+    //Swap the buffers and clear to display on the screen
 	glutSwapBuffers();
 	glClear(GL_COLOR_BUFFER_BIT);
 }
+
+/* Reshape the scene to display correclty in the window
+ */
 
 void
 reshape(int w, int h)
@@ -86,20 +104,25 @@ reshape(int w, int h)
     glOrtho(0, hw, 0, hh, -1.0, 1.0);
 }
 
+/* Respond to mouse events - not implemented now
+ */
+
 void mouse(int button, int state, int x, int y)
 {
 	/* mouse handling function */
 }
 
+/* Respond to keyboard pressed - forward all key presses to 
+ * scene manager except for 'f', which toggles fullscreen
+ */
+
 void keyboard(unsigned char key, int x, int y)
-{
-    scene_manager_keyboard_pressed(key);
-    
+{    
     switch (key) {
         case 'f':
             if(fullScreen)
             {
-                glutReshapeWindow(800, 600);    
+                glutReshapeWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT);    
                 glutPositionWindow(0,0);
                 fullScreen = 0;
             }else
@@ -109,14 +132,24 @@ void keyboard(unsigned char key, int x, int y)
             }
             break;
         default:
+            scene_manager_keyboard_pressed(key);
             break;
     }
 }
+
+/* Respond to keyboard released - forward all key presses to 
+ * scene manager.
+ */
 
 void keyboardUp(unsigned char key, int x, int y)
 {
     scene_manager_keyboard_released(key);
 }
+
+/* Respond to special keyboard keys (arrow keys)
+ * these are mapped to wasd and then the normal 
+ * keyboard function is called.
+ */
 
 void specialFunction(int key, int x, int y)
 {
@@ -137,6 +170,9 @@ void specialFunction(int key, int x, int y)
             break;
     }
 }
+
+/* Setup our game
+ */
 
 int main(int argc, char *argv[])
 {    

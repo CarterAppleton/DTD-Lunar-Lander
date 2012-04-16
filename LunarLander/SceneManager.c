@@ -14,21 +14,39 @@
 #include "TitleScene.h"
 #include "GameScene.h"
 
+/* Set the types of scenes
+ */
+
 typedef enum 
 {
     title_scene = 0,
     game_scene,
 } Scene;
 
+/* The struct for the scene Manager
+ * we have an int for whatever scene is being
+ * displayed and an int for the total number 
+ * of scenes
+ */
+
 typedef struct sceneManager
 {
-    Scene current_scene;
-    int num_scenes;
+    Scene current_scene; //the current scene
+    int num_scenes;      //the total number of scenes
 } sceneManager;
+
+/* Make SceneManager a pointer
+ */
 
 typedef sceneManager* SceneManager;
 
-static SceneManager scene_manager;
+/* Create the static instance of a Scene Manager
+ */
+
+static SceneManager scene_manager = NULL;
+
+/* Initialize the static scene manager
+ */
 
 void scene_manager_init()
 {
@@ -38,11 +56,16 @@ void scene_manager_init()
     scene_manager->num_scenes = 2;
 }
 
+/* Update the scene manager struct 
+ * This just forwards the update to the current scene.
+ */
+
 void scene_manager_update()
 {
-    if(!scene_manager)
-        scene_manager_init();
+    //If the scene manager doesn't exist, create it
+    if(!scene_manager) scene_manager_init();
     
+    //Forward the update call to the current scene
     switch (scene_manager->current_scene) 
     {
         case title_scene:
@@ -56,11 +79,16 @@ void scene_manager_update()
     }
 }
 
+/* Display the scene manager struct 
+ * This just forwards the display call to the current scene.
+ */
+
 void scene_manager_display()
 {
-    if(!scene_manager)
-        scene_manager_init();
+    //If the scene manager doesn't exist, create it
+    if(!scene_manager) scene_manager_init();
     
+    //Forward the display call to the current scene
     switch (scene_manager->current_scene) 
     {
         case title_scene:
@@ -74,8 +102,13 @@ void scene_manager_display()
     }
 }
 
+/* Respond to a key press 
+ * This just forwards the press to the current scene.
+ */
+
 void scene_manager_keyboard_pressed(char c)
 {
+    //Forward the press call to the current scene
     switch (scene_manager->current_scene) 
     {
         case title_scene:
@@ -89,8 +122,13 @@ void scene_manager_keyboard_pressed(char c)
     }
 }
 
+/* Respond to a key release 
+ * This just forwards the release to the current scene.
+ */
+
 void scene_manager_keyboard_released(char c)
 {
+    //Forward the release call to the current scene
     switch (scene_manager->current_scene) 
     {
         case title_scene:
@@ -104,10 +142,17 @@ void scene_manager_keyboard_released(char c)
     }
 }
 
+/* Set the current scene 
+ * This can be called by any scene because SceneManager is a 
+ * static instance.
+ */
+
 void scene_manager_set_scene(int scene)
 {
+    //Make sure the scene is in the corrent range
     if(scene < 0 || scene >= scene_manager->num_scenes)
         return;
     
+    //Change the scene
     scene_manager->current_scene = scene;
 }
