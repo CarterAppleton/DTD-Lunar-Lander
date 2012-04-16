@@ -210,6 +210,7 @@ void game_scene_keyboard_pressed(char c)
             cpBodySetVel(scene->lander->body, cpvzero);
             cpBodySetAngVel(scene->lander->body, 0);
             scene->lander->orientation = 0;
+            scene->game_over = 0;
             break;
         case 'w': //increase thrust
             landerAdjustThrust(0.025, scene->lander);
