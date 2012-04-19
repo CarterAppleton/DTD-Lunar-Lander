@@ -255,10 +255,9 @@ void game_scene_update()
         cpSpaceStep(scene->space, 1.0f/60.0f);
         
         //Check if we need to zoom
-        GLfloat stepWidth = ((GLfloat)glutGet(GLUT_WINDOW_WIDTH)) / (scene->height_map->count-1);
+        GLfloat stepWidth = ((GLfloat)DEFAULT_WIDTH) / (scene->height_map->count-1);
         int index = landerPosition(scene->lander).x / stepWidth;
         
-        //printf("%f \n",landerPosition(scene->lander).y - arrayValueAtIndex(index, scene->height_map));
         if(landerPosition(scene->lander).y - arrayValueAtIndex(index, scene->height_map) < 150)
             scene->zoom = 1;
         else 
