@@ -308,7 +308,39 @@ static int char_0[5][5] =
     {1,0,0,1,0},
     {1,0,0,1,0},
     {0,1,1,0,0},};
- 
+
+static int char_colon[5][5] = 
+{
+    {0,1,1,0,0},
+    {0,1,1,0,0},
+    {0,0,0,0,0},
+    {0,1,1,0,0},
+    {0,1,1,0,0},};
+
+static int char_negative[5][5] = 
+{
+    {0,0,0,0,0},
+    {1,1,1,0,0},
+    {0,0,0,0,0},
+    {0,0,0,0,0},
+    {0,0,0,0,0},};
+
+static int char_period[5][5] = 
+{
+    {0,0,0,0,0},
+    {0,0,0,0,0},
+    {0,0,0,0,0},
+    {0,0,1,1,0},
+    {0,0,1,1,0},};
+
+static int char_exclamation[5][5] = 
+{
+    {0,0,1,0,0},
+    {0,0,1,0,0},
+    {0,0,1,0,0},
+    {0,0,0,0,0},
+    {0,0,1,0,0},};
+
 typedef struct CarterChar
 {
     char c;
@@ -443,6 +475,18 @@ CAChar CACharMake(char ch)
                 case '0':
                     cac->map[r][c] = char_0[r][c];
                     break;    
+                case ':':
+                    cac->map[r][c] = char_colon[r][c];
+                    break;  
+                case '-':
+                    cac->map[r][c] = char_negative[r][c];
+                    break;    
+                case '.':
+                    cac->map[r][c] = char_period[r][c];
+                    break; 
+                case '!':
+                    cac->map[r][c] = char_exclamation[r][c];
+                    break;
                 default:
                     break;
             }
@@ -456,16 +500,18 @@ int** CALetter(char c)
 {
     if(!cachar_array)
     {
-        cachar_array =  malloc(sizeof(CAChar) * (26 + 10));
+        cachar_array = malloc(sizeof(CAChar) * (128));
         
-        for(int i=0; i<26+10; i++)
+        for(int i=0; i<128; i++)
             cachar_array[i] = NULL;
     }
     
-    int val = c - 97;
+    int val = c;
     
-    if(c < 58)
-        val = 26 + c - 48;
+    //int val = c - 97;
+    
+    //if(c < 58)
+    //    val = 26 + c - 48;
                     
     if(!cachar_array[val])
         cachar_array[val] = CACharMake(c);

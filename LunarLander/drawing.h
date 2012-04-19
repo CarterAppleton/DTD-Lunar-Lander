@@ -32,10 +32,11 @@ void drawCircle(cpVect center, cpFloat angle, cpFloat radius, Color lineColor, C
 void drawRect(cpVect upperLeft, cpVect dimensions, Color fillColor);
 void drawString(int x, int y, const char *str, Color stringColor);
 
-//void drawCALetter(char c, GLfloat size, GLfloat px, GLfloat py);
 void drawCALetter(int** c, GLfloat size, GLfloat px, GLfloat py);
-
 void drawCAWord(char* string, GLfloat size, GLfloat px, GLfloat py);
+
+void drawLine(cpFloat ax, cpFloat ay, cpFloat bx, cpFloat by);
+void drawLander(cpVect center, cpFloat angle, cpFloat radius, cpFloat thrust);
 
 void drawHeightMap(HeightMap h, int totalWidth);
                    

@@ -29,5 +29,6 @@ void game_scene_keyboard_pressed(char c);
  */
 void game_scene_keyboard_released(char c);
 
+void restart();
 
 #endif

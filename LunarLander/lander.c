@@ -13,8 +13,7 @@
 
 #include "constants.h"
 
-#define MAX_ORIENTATION 3
-#define MAX_THRUST 1.68f
+
 
 cpFloat radiansFromOrientation(int orientation)
 {
@@ -33,8 +32,9 @@ Lander landerMake(cpVect position, cpFloat thrust, int orientation, int fuel, cp
     l->body = cpSpaceAddBody(inSpace, cpBodyNew(mass, cpMomentForCircle(mass, radius, 0, cpvzero)));
     cpBodySetPos(l->body, position);
     cpBodySetAngle(l->body, radiansFromOrientation(orientation));
+    cpBodySetVelLimit(l->body, 20);
     
-    l->shape = cpSpaceAddShape(inSpace, cpCircleShapeNew(l->body, radius, cpvzero));
+    l->shape = cpSpaceAddShape(inSpace, cpCircleShapeNew(l->body, radius/2, cpvzero));
     cpShapeSetCollisionType(l->shape, LANDER_TAG);
     cpShapeSetElasticity(l->shape, 0.0f);
     cpShapeSetFriction(l->shape, 0.5f);
@@ -62,7 +62,9 @@ void landerUpdate(Lander l)
 
 void landerDraw(Lander l)
 {
-    drawCircle(l->body->p, cpvtoangle(l->body->rot), cpCircleShapeGetRadius(l->shape), RGBAColor(1.0, 1.0, 1.0, 1.0), RGBAColor(0.0, 0.0, 0.0, 1.0));
+    drawCircle(l->body->p, cpvtoangle(l->body->rot), cpCircleShapeGetRadius(l->shape), RGBAColor(0, 0, 0, 0), RGBAColor(1.0, 1.0, 1.0, 0.05));
+    glColor_from_color(RGBAColor(1.0, 1.0, 1.0, 1.0));
+    drawLander(l->body->p, cpvtoangle(l->body->rot), cpCircleShapeGetRadius(l->shape)*1.8, l->thrust);
 }
 
 void landerRotate(int direction, Lander l) //-1 counterclockwise, 1 clockwise
@@ -97,7 +99,22 @@ cpFloat landerSpeed(Lander l)
     return l->body->v.y;
 }
 
+cpFloat landerHorizontalSpeed(Lander l)
+{
+    return l->body->v.x;
+}
+
 cpVect landerPosition(Lander l)
 {
     return l->body->p;
+}
+
+cpFloat landerAngle(Lander l)
+{
+    return cpvtoangle(l->body->rot);
+}
+
+void landerSetThrust(Lander l, cpFloat thrust)
+{
+    l->thrust = thrust;
 }

@@ -33,6 +33,10 @@ typedef struct sceneManager
 {
     Scene current_scene; //the current scene
     int num_scenes;      //the total number of scenes
+    
+    int total_num_highscores;
+    char** high_score_holders;
+    int* high_scores;
 } sceneManager;
 
 /* Make SceneManager a pointer
@@ -54,6 +58,18 @@ void scene_manager_init()
     
     scene_manager->current_scene = title_scene;
     scene_manager->num_scenes = 2;
+    
+    scene_manager->total_num_highscores = 5;
+    scene_manager->high_score_holders = malloc(sizeof(char*) * scene_manager->total_num_highscores);
+    scene_manager->high_scores = calloc(scene_manager->total_num_highscores,sizeof(int));
+    
+    for(int i=0; i<scene_manager->total_num_highscores; i++)
+    {
+        scene_manager->high_scores[0] = 0;
+        scene_manager->high_score_holders[i] = malloc(sizeof(char) * 3);
+        for(int j=0; j<3; j++)
+            scene_manager->high_score_holders[i][j] = '?';
+    }
 }
 
 /* Update the scene manager struct 
@@ -155,4 +171,63 @@ void scene_manager_set_scene(int scene)
     
     //Change the scene
     scene_manager->current_scene = scene;
+}
+
+int scene_manager_add_highscore(int score, char* name)
+{
+    int i;
+    
+    for(int i = 0; i<scene_manager->total_num_highscores; i++)
+        printf("%d, ",scene_manager->high_scores[i]);
+    printf("\n");
+    
+    for(i=0; i<scene_manager->total_num_highscores; i++)
+    {
+        if(scene_manager->high_scores[i] < score)
+        {
+            for(int j=scene_manager->total_num_highscores-1; j>i; j--)
+            {
+                scene_manager->high_scores[j] = scene_manager->high_scores[j-1];
+
+                for(int k=0; k<3; k++)
+                    scene_manager->high_score_holders[j][k] = scene_manager->high_score_holders[j-1][k];
+            }
+            
+            scene_manager->high_scores[i] = score;
+            
+            for(int k=0; k<3; k++)
+                scene_manager->high_score_holders[i][k] = name[k];
+            
+            break;
+        }
+    }
+
+    
+    return i;
+}
+
+/* Check is high score
+ */
+int scene_manager_is_highscore(int score)
+{
+    for(int i=0; i<scene_manager->total_num_highscores; i++)
+        if(scene_manager->high_scores[i] < score)
+            return 1;
+    
+    return 0;
+}
+
+char** scene_manager_highscorers()
+{
+    return scene_manager->high_score_holders;
+}
+
+int* scene_manager_highscores()
+{
+    return scene_manager->high_scores;    
+}
+
+int scene_manager_numscores()
+{
+    return scene_manager->total_num_highscores;    
 }

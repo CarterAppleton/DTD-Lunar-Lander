@@ -7,11 +7,13 @@
 //
 
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <GLUT/glut.h>
 #include "drawing.h"
 #include "chipmunk.h"
 
+#include "constants.h"
 #include "fonts.h"
 
 void
@@ -47,7 +49,7 @@ GLfloat circleVAR[] = {
 	-0.5000f,  0.8660f,
 	-0.2588f,  0.9659f,
     0.0000f,  1.0000f,
-    0.0f, 0.0f, // For an extra line to see the rotation.
+    //0.0f, 0.0f, // For an extra line to see the rotation.
 };
 static const int circleVAR_count = sizeof(circleVAR)/sizeof(GLfloat)/2;
 
@@ -96,8 +98,6 @@ void drawString(int x, int y, const char *str, Color stringColor)
 {
     glColor_from_color(stringColor);
 	glRasterPos2i(x, y);
-    
-    
 	
 	for(int i=0, len=strlen(str); i<len; i++){
 		if(str[i] == '\n'){
@@ -129,6 +129,13 @@ void drawHeightMap(HeightMap h, int totalWidth)
         glVertex3f(x*stepWidth, 0,z);
         
         glEnd();
+        
+#if EDIT_LANDSCAPE
+        glPointSize(stepWidth/2);
+        glBegin(GL_POINTS);
+        glVertex2f(x*stepWidth, arrayValueAtIndex(x, h));
+        glEnd();  
+#endif
     }
     
     glTranslatef(0, -1, 0);
@@ -144,11 +151,71 @@ void drawHeightMap(HeightMap h, int totalWidth)
         glVertex3f(x*stepWidth, 0,z);
         
         glEnd();
+        
+
     }
     glTranslatef(0, 1, 0);
 }
 
+void drawLine( cpFloat ax, cpFloat ay, cpFloat bx, cpFloat by)
+{     
+    GLfloat shift = -0.5;
 
+    glVertex2f( ax+shift, ay+shift); 
+    glVertex2f( bx+shift, by+shift); 
+}  
+
+void drawLander(cpVect center, cpFloat angle, cpFloat radius, cpFloat thrust)
+{
+    glPushMatrix(); 
+    {
+		glTranslatef(center.x, center.y, 0.0f);
+		glRotatef((angle-M_PI)*720.0f/M_PI, 0.0f, 0.0f, 1.0f);
+		glScalef(radius, radius, 1.0f);
+        
+        glBegin(GL_LINES); 
+        
+
+        drawLine(0, 0, 0.25, 0);   //horizontal base
+        drawLine(0.75, 0, 1.0, 0);
+
+        drawLine(0.125, 0, 0.125, 0.25); //vert off base
+        drawLine(0.875, 0, 0.875, 0.25);
+
+        drawLine(0.4, 0.25, 0.6, 0.25); //triangle off bod
+        drawLine(0.4, 0.25, 0.5, 0.375);
+        drawLine(0.6, 0.25, 0.5, 0.375);
+        
+        drawLine(0.2, 0.375, 0.8, 0.375); //rect body
+        drawLine(0.2, 0.475, 0.8, 0.475);
+        drawLine(0.2, 0.375, 0.2, 0.475);
+        drawLine(0.8, 0.475, 0.8, 0.375);
+        
+        drawLine(0.125, 0.25, 0.2, 0.425); //lines to body
+        drawLine(0.875, 0.25, 0.8, 0.425);
+        drawLine(0.125, 0.25, 0.3, 0.375);
+        drawLine(0.875, 0.25, 0.7, 0.375);
+        
+        drawLine(0.3, 0.525, 0.2, 0.700); //octagon top
+        drawLine(0.2, 0.700, 0.2, 0.900); 
+        drawLine(0.2, 0.900, 0.3, 0.975); 
+        drawLine(0.3, 0.975, 0.7, 0.975); //1/2
+        drawLine(0.8, 0.900, 0.7, 0.975); 
+        drawLine(0.8, 0.700, 0.8, 0.900); 
+        drawLine(0.7, 0.525, 0.8, 0.700);
+                
+        thrust = (int)(thrust/INITIAL_THRUST);
+        drawLine(0.4, 0.2-thrust, 0.6, 0.2-thrust);
+        drawLine(0.4, 0.2-thrust, 0.5, 0.2);
+        drawLine(0.6, 0.2-thrust, 0.5, 0.2);
+        
+        glEnd(); 
+
+
+
+	} 
+    glPopMatrix();
+}
 
 void drawCALetter(int** c, GLfloat size, GLfloat px, GLfloat py)
 {
@@ -182,7 +249,8 @@ void drawCAWord(char* string, GLfloat size, GLfloat px, GLfloat py)
     {
         char c = string[i];
         
-        drawCALetter(CALetter(c), size, px, py);
+        if(c != ' ')
+            drawCALetter(CALetter(c), size, px, py);
         
         px+=size*5;
     }

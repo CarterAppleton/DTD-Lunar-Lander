@@ -33,4 +33,16 @@ void scene_manager_keyboard_released(char c);
  */
 void scene_manager_set_scene(int scene);
 
+/* Add a highscore
+ */
+int scene_manager_add_highscore(int score, char* name);
+
+/* Check is high score
+ */
+int scene_manager_is_highscore(int score);
+
+char** scene_manager_highscorers();
+int* scene_manager_highscores();
+int scene_manager_numscores();
+
 #endif

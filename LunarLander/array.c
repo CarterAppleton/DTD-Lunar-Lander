@@ -21,6 +21,16 @@ Array arrayMake(int length)
     return a;
 }
 
+Array arrayMakeFromArray(int length, int* array)
+{
+    Array a = arrayMake(length);
+    
+    for(int i=0; i<length; i++)
+        arrayAdd(array[i], a);
+    
+    return a;
+}
+
 void arrayFree(Array a)
 {
     free(a->data);
@@ -66,7 +76,7 @@ void arrayReplaceAtIndex(int value, int index, Array a)
 int arrayValueAtIndex(int index, Array a)
 {
     if(!arrayIsIndexValid(index, a))
-        return NULL;
+        return -1;
     
     return a->data[index];
 }
@@ -74,7 +84,7 @@ int arrayValueAtIndex(int index, Array a)
 int arrayRemoveAtIndex(int index, Array a)
 {
     if(!arrayIsIndexValid(index, a))
-        return NULL;
+        return -1;
     
     int tmp = a->data[index];
     
@@ -84,5 +94,13 @@ int arrayRemoveAtIndex(int index, Array a)
     a->count--;
     
     return tmp;
+}
+
+void arrayPrint(Array a)
+{
+    printf("Array c[%d] = {",a->count);
+    for(int i=0; i<a->count; i++)
+        printf("%d,",arrayValueAtIndex(i, a));
+    printf("}\n");
 }
 

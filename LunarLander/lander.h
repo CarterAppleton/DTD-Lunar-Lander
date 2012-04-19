@@ -31,6 +31,10 @@ void landerRotate(int direction, Lander l); //-1 counterclockwise, 1 clockwise
 void landerAdjustThrust(cpFloat direction, Lander l); //-1 decrease, 1 increase
 
 cpFloat landerSpeed(Lander l);
+cpFloat landerHorizontalSpeed(Lander l);
 cpVect landerPosition(Lander l);
 
+cpFloat landerAngle(Lander l);
+
+void landerSetThrust(Lander l, cpFloat thrust);
 #endif
