@@ -13,6 +13,7 @@
 #define LANDER_TAG 15
 #define MOON_LAND_TAG 14
 #define ASTEROID_TAG 12
+#define NULL_TAG 1
 
 //Drawing Constants
 #define SLEEP_TICKS 16

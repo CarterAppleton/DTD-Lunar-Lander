@@ -165,6 +165,25 @@ addHeightMap(Array h, int totalWidth)
         cpShapeSetCollisionType(shape, MOON_LAND_TAG);
         shape->e = 0.0f; shape->u = 0.5f;
     }
+    
+    //Add constraining rect
+    shape = cpSpaceAddShape(scene->space, cpSegmentShapeNew(staticBody, cpv(0,0), cpv(0,DEFAULT_HEIGHT), 0.0f));
+    cpShapeSetCollisionType(shape, NULL_TAG);
+    shape->e = 0.0f; shape->u = 0.0f;
+    
+    shape = cpSpaceAddShape(scene->space, cpSegmentShapeNew(staticBody, cpv(0,DEFAULT_HEIGHT), cpv(DEFAULT_WIDTH/2,DEFAULT_HEIGHT+100), 0.0f));
+    cpShapeSetCollisionType(shape, NULL_TAG);
+    shape->e = 0.0f; shape->u = 0.0f;
+    
+    shape = cpSpaceAddShape(scene->space, cpSegmentShapeNew(staticBody, cpv(DEFAULT_WIDTH/2,DEFAULT_HEIGHT+100), cpv(0,DEFAULT_HEIGHT), 0.0f));
+    cpShapeSetCollisionType(shape, NULL_TAG);
+    shape->e = 0.0f; shape->u = 0.0f;
+    
+    shape = cpSpaceAddShape(scene->space, cpSegmentShapeNew(staticBody, cpv(DEFAULT_WIDTH,0), cpv(DEFAULT_WIDTH,DEFAULT_HEIGHT), 0.0f));
+    cpShapeSetCollisionType(shape, NULL_TAG);
+    shape->e = 0.0f; shape->u = 0.0f;
+    
+    
 }
 
 /* Initialize the static game scene
@@ -271,7 +290,7 @@ void game_scene_display()
         if(lp.x - width < 0)
             lp.x = width;
         else if(lp.x + width > DEFAULT_WIDTH)
-            lp.x = DEFAULT_WIDTH;
+            lp.x = DEFAULT_WIDTH-width;
         
         if(lp.y - height < 0)
             lp.y = height;
